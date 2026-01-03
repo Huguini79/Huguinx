@@ -1,0 +1,1 @@
+gcc -I./ -m32 -ffreestanding -nostdlib -c drivers/memory/heap/heap.c -o build/heap.o

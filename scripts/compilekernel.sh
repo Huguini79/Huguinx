@@ -1,0 +1,1 @@
+gcc -I./ -m32 -ffreestanding -nostdlib -c kernel/kernel.c -o build/kernel.o

@@ -1,0 +1,1 @@
+nasm -f elf32 arch/x86/entry.asm -o build/entry.asm.o
