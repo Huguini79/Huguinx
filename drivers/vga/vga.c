@@ -2,6 +2,11 @@
 // VGA driver
 #include "vga.h"
 
+#include "drivers/serial/serial.h"
+
+#include "libc/stdio.h"
+#include "libc/string.h"
+
 #include <stdint.h>
 #include <stddef.h>
 
@@ -25,6 +30,16 @@ void huguinx_xychar(int x, int y, char c, char color) {
 	// WE PUT A CHARACTER IN THE VGA video mem
 	vga->video_mem[(y * VGA_WIDTH) + x] = huguinx_create_char(c, color);
 
+}
+
+void huguinx_logs(const char* str) {
+		write_serial_string("\nLOG: *");
+		huguinx_print("\nLOG: *");
+		write_serial_string(str);
+		huguinx_print(str);
+		write_serial('*');
+		huguinx_print("*");
+	
 }
 
 void huguinx_perfectchar(char c, char color) {

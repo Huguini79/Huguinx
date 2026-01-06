@@ -7,7 +7,7 @@
 
 #include "libc/string.h"
 
-void huguinx_print(const char* str) {
+static void huguinx_print(const char* str) {
 	// WE GET THE SIZE OF THE STR
 	size_t len = strlen(str);
 
