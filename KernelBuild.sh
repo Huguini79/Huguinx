@@ -18,7 +18,8 @@ mkdir build
 ./scripts/compilevga.sh # COMPILE VGA DRIVER
 # DISCOMMENT THIS LINE IF YOU WANT TO GENERATE AN ISO FILE WITH GRUB
 ./scripts/compilekernel.sh # COMPILE THE KERNEL
-# ./scripts/compileio.sh # COMPILE THE I/O DRIVER
+./scripts/compileio.sh # COMPILE THE I/O DRIVER
+./scripts/compileserial.sh # COMPILE THE SERIAL PORTS DRIVER
 # ./scripts/compilekeyboard.sh # COMPILE THE KEYBOARD DRIVER
 # ./scripts/compileheap.sh # COMPILE THE HEAP IMPLEMENTATION
 # ./scripts/compilepaging.sh # COMPILE THE PAGING IMPLEMENTATION
@@ -35,4 +36,4 @@ echo "BUILD FINISHED, NOW YOU CAN BOOT THE KERNEL WITH QEMU OR IN REAL HARDWARE,
 echo "iso/boot/kernel"
 echo "huguinx.iso"
 
-qemu-system-x86_64 huguinx.iso
+qemu-system-x86_64 -serial stdio huguinx.iso
