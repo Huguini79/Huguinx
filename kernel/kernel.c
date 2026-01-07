@@ -34,14 +34,14 @@ void kernel_main() {
 	
 	huguinx_logs("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
 
-	volatile int divi = 40 / 0;
+	// volatile int divi = 40 / 0;
 
     // huguinx_xychar(50, 50, 'A', 15);
 
     /* init_keyboard(); */
     
    while(1) {
-        __asm__("sti");
+        __asm__("hlt");
    
    }
 
