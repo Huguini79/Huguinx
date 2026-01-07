@@ -23,7 +23,7 @@ mkdir build
 # ./scripts/compilekeyboard.sh # COMPILE THE KEYBOARD DRIVER
 # ./scripts/compileheap.sh # COMPILE THE HEAP IMPLEMENTATION
 # ./scripts/compilepaging.sh # COMPILE THE PAGING IMPLEMENTATION
-# ./scripts/compileidt.sh # COMPILE THE IDT IMPLEMENTATION
+./scripts/compileidt.sh # COMPILE THE IDT IMPLEMENTATION
 # ./scripts/compilegdt.sh # COMPILE THE GDT IMPLEMENTATION
 # ./scripts/compiletss.sh # COMPILE THE TSS IMPLEMENTATION
 ./scripts/compileentry.sh # COMPILE THE ENTRY FROM GRUB AND THE C KERNEL
