@@ -5,6 +5,7 @@
 #include "kernel/kernel.h"
 #include "drivers/io/io.h"
 #include "drivers/serial/serial.h"
+#include "arch/x86/idt/idt.h"
 
 /*
 
@@ -12,7 +13,6 @@
 #include "drivers/memory/heap/heap.h"
 #include "drivers/memory/paging/paging.h"
 #include "drivers/keyboard/keyboard.h"
-#include "arch/x86/idt/idt.h"
 #include "arch/x86/gdt/gdt.h"
 #include "arch/x86/tss/tss.h"
 
@@ -25,6 +25,8 @@ void kernel_main() {
 
     huguinx_logs("KERNEL INITIALIZED WITH SUCCESS");
     huguinx_logs("VGA INITIALIZED WITH SUCCESS");
+    idt_init();
+    huguinx_logs("IDT INITIALIZED WITH SUCCESS");
 
 	init_serial();
 	
@@ -32,8 +34,15 @@ void kernel_main() {
 	
 	huguinx_logs("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
 
+	volatile int divi = 40 / 0;
+
     // huguinx_xychar(50, 50, 'A', 15);
 
     /* init_keyboard(); */
+    
+   while(1) {
+        __asm__("sti");
+   
+   }
 
 }
