@@ -72,6 +72,27 @@ void huguinx_perfectchar(char c, char color) {
 
 }
 
+void panic(const char* str) {
+	size_t len = strlen(str);
+	
+	huguinx_perfectchar('*', 0x4F);
+	for (int i = 0; i < len; i++) {
+		huguinx_perfectchar(str[i], 0x4F);
+	}
+	huguinx_perfectchar('*', 0x4F);
+	
+}
+
+void row_plus() {
+	vga->row += 1;
+	vga->col = 0;
+}
+
+void row_minus() {
+	vga->row -= 1;
+	vga->col = 0;
+}
+
 void huguinx_clear() {
 	// WE SET X AND Y POSITIONS TO 0
 	vga->row = 0;

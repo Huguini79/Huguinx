@@ -20,10 +20,13 @@ struct vga {
 
 // VGA functions
 void huguinx_init_screen(); // WE INIT THE VGA SCREEN
-uint16_t huguinx_create_char(char c, char color); // WE CREATE A CHARACTER
-void huguinx_xychar(int x, int y, char c, char color); // WE SET A CHARACTER WITH A SPECIFIC VGA COLOR
-void huguinx_perfectchar(char c, char color); // WE SET AUTOMATICALLY A CHARACTER IN THE NEXT X AND Y POSITION USING THE huguinx_xychar FUNCTION
+static uint16_t huguinx_create_char(char c, char color); // WE CREATE A CHARACTER
+static void huguinx_xychar(int x, int y, char c, char color); // WE SET A CHARACTER WITH A SPECIFIC VGA COLOR
+inline void huguinx_perfectchar(char c, char color); // WE SET AUTOMATICALLY A CHARACTER IN THE NEXT X AND Y POSITION USING THE huguinx_xychar FUNCTION
 void huguinx_clear(); // WE CLEAR THE SCREEN
-void huguinx_logs(const char* str);
+void huguinx_logs(const char* str); // WE PRINT LOGS IN SERIAL AND IN VGA
+static void panic(const char* str); // WE PRINT THE KERNEL PANIC IN SERIAL AND IN VGA
+void row_plus(); // WE INCREMENT THE Y POSITION
+void row_minus(); // WE DISCREMENT THE Y POSITION
 
 #endif

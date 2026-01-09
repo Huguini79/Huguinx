@@ -6,24 +6,39 @@
 #include "drivers/io/io.h"
 #include "drivers/serial/serial.h"
 #include "arch/x86/idt/idt.h"
+#include "arch/x86/gdt/gdt.h"
+#include "drivers/keyboard/keyboard.h"
+
+#include "config.h"
 
 /*
 
-#include "drivers/keyboard/keyboard.h"
 #include "drivers/memory/heap/heap.h"
 #include "drivers/memory/paging/paging.h"
-#include "drivers/keyboard/keyboard.h"
-#include "arch/x86/gdt/gdt.h"
 #include "arch/x86/tss/tss.h"
 
 */
 
+struct gdt gdt_real[HUGUINX_TOTAL_GDT_SEGMENTS];
+struct gdt_structured gdt_structured[HUGUINX_TOTAL_GDT_SEGMENTS] = {
+{.base=0x00, .limit=0x00, .type=0x00}, // NULL Segment
+{.base=0x00, .limit=0xffffffff, .type=0x9a}, // Kernel code Segment
+{.base=0x00, .limit=0xffffffff, .type=0x92} // Kernel data Segment
+};
+ 
 void kernel_main() {
     huguinx_init_screen();
     
     huguinx_print("Huguinx - 1.0 | Huguini79 (https://github.com/Huguini79/Huguinx)\n");
 
     huguinx_logs("KERNEL INITIALIZED WITH SUCCESS");
+    
+	memset(gdt_real, 0x00, sizeof(gdt_real));
+	gdt_structured_to_gdt(gdt_real, gdt_structured, HUGUINX_TOTAL_GDT_SEGMENTS);
+
+	gdt_load(gdt_real, sizeof(gdt_real));
+	
+	huguinx_logs("GDT INITIALIZED WITH SUCCESS");
     huguinx_logs("VGA INITIALIZED WITH SUCCESS");
     idt_init();
     huguinx_logs("IDT INITIALIZED WITH SUCCESS");
@@ -34,7 +49,17 @@ void kernel_main() {
 	
 	huguinx_logs("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
 
-	// volatile int divi = 40 / 0;
+	huguinx_logs("KEYBOARD INITIALIZED WITH SUCCESS");
+	row_plus();
+	row_plus();
+	row_plus();
+	row_plus();
+	huguinx_print("root@huguinx# ");
+	write_serial_string("\n\n");
+	write_serial_string("root@huguinx# ");
+	init_keyboard(); // WARNING: THIS FUNCTIONS USES MANUAL POLLING, THIS RUNS AN INFINITE LOOP THAT CHECKS THE STATUS OF THE KEYBOARD AND THE SCANCODE
+	
+	// int divi = 40 / 0;
 
     // huguinx_xychar(50, 50, 'A', 15);
 
