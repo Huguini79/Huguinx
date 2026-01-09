@@ -1,6 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+/* GDT */
+
+/* Total GDT Segments */
+#define HUGUINX_TOTAL_GDT_SEGMENTS 3 // <- 1) Null Segment, Kernel code segment, Kernel data segment
 
 /* IDT */
 
