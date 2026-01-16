@@ -42,7 +42,7 @@ void init_keyboard() {
 			/* A-Z Scancodes */
 			if(scancode == A_SCANCODE) {huguinx_print(shift_pressed ? "A" : "a");}
 			if(scancode == B_SCANCODE) {huguinx_print(shift_pressed ? "B" : "b");}
-			if(scancode == C_SCANCODE) {huguinx_print(shift_pressed ? "C" : "b");}
+			if(scancode == C_SCANCODE) {huguinx_print(shift_pressed ? "C" : "c");}
 			if(scancode == D_SCANCODE) {huguinx_print(shift_pressed ? "D" : "d");}
 			if(scancode == E_SCANCODE) {huguinx_print(shift_pressed ? "E" : "e");}
 			if(scancode == F_SCANCODE) {huguinx_print(shift_pressed ? "F" : "f");}
