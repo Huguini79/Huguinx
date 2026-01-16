@@ -1,1 +1,1 @@
-<h1>Huguinx OPERATING SYSTEM</h1>
+<h1>Huguinx Operating System</h1>
