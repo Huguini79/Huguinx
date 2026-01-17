@@ -21,10 +21,11 @@ extern void idt_load(struct idtr_descriptor* ptr);
 extern void int21h();
 extern void no_interrupt();
 
-const char* divide_zero_error_message = "Divide by zero error\n";
+const char* divide_zero_error_message = "\n";
 
 void idt_zero() {
-	huguinx_print(divide_zero_error_message);
+	// huguinx_print(divide_zero_error_message);
+	row_plus();
 }
 
 void int21h_handler() {

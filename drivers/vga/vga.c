@@ -34,7 +34,8 @@ void huguinx_xychar(int x, int y, char c, char color) {
 
 void huguinx_logs(const char* str) {
 		write_serial_string("\nLOG: *");
-		huguinx_print("\nLOG: *");
+		row_plus();
+		huguinx_print("LOG: *");
 		write_serial_string(str);
 		huguinx_print(str);
 		write_serial('*');

@@ -37,4 +37,5 @@ echo "BUILD FINISHED, NOW YOU CAN BOOT THE KERNEL WITH QEMU OR IN REAL HARDWARE,
 echo "iso/boot/kernel"
 echo "huguinx.iso"
 
-qemu-system-x86_64 -serial stdio huguinx.iso
+# qemu-system-x86_64 -serial stdio huguinx.iso
+qemu-system-i386   -drive file=programtest.bin,format=raw,index=0,media=disk   -cdrom huguinx.iso   -boot d   -serial stdio

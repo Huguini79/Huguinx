@@ -3,6 +3,8 @@
 #include "libc/string.h"
 #include "drivers/io/io.h"
 #include "drivers/vga/vga.h"
+#include "kernel/kernel.h"
+#include "drivers/disk/disk.h"
 
 int shift_pressed = 0;
 
@@ -25,9 +27,22 @@ void init_keyboard() {
 				shift_pressed = 0;
 			}
 			
+ 
 			/* Special Scancodes */
-			if(scancode == SPACE_SCANCODE) {huguinx_print(" ");write_serial(' ');}
-			if(scancode == ENTER_SCANCODE) {row_plus();	write_serial('\n');huguinx_print("root@huguinx# ");}
+			if(scancode == SPACE_SCANCODE) {huguinx_print(" ");write_serial(' ');add_character(' ');}
+			if(scancode == ENTER_SCANCODE) {
+				if(command_buffer[0] == '\0') {row_plus();	write_serial('\n');huguinx_print("# ");write_serial_string("# ");}
+				else if(strncmp(command_buffer, "hello", 5) == 0) {row_plus();huguinx_print("HELLO FROM HUGUINX\n\n");write_serial_string("\nHELLO FROM HUGUINX\n\n");huguinx_print("# ");write_serial_string("# ");}
+				else if(strncmp(command_buffer, "read1sector", 11) == 0) {char disk_buf[1024]; disk_read_sector(0, 1, disk_buf); for (int i = 0; i < 1024; i++) {huguinx_perfectchar(disk_buf[i], 15);write_serial(disk_buf[i]);}row_plus();row_plus();huguinx_print("# ");write_serial_string("\n\n# ");}
+				else if(strncmp(command_buffer, "clear", 5) == 0) {huguinx_clear();row_plus();huguinx_print("# ");write_serial_string("# ");}
+				else if(strncmp(command_buffer, "echo", 4) == 0) {row_plus();huguinx_print(command_buffer + 5);write_serial('\n');write_serial_string(command_buffer + 5);row_plus();row_plus();huguinx_print("# ");write_serial_string("\n\n# ");}
+				else if(strncmp(command_buffer, "help", 4) == 0) {huguinx_clear();huguinx_print("HELP:\nclear - Clears the screen <- this only works in VGA text mode\nread1sector - Reads 1 sector of the ATA/IDE Hard Drive\nhello - A simple hello for the huguinx operating system\necho - Prints the text that you want");row_plus();row_plus();huguinx_print("# ");}
+				else {huguinx_logs("ERROR => COMMAND NOT RECOGNIZED");}
+				
+				command_buffer[0] = '\0';
+				pos = 0;
+				
+			}
 			// if(scancode == BACKSPACE_SCANCODE) {};
 			
 			/* Numbers Scancodes */
