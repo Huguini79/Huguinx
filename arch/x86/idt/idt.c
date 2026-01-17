@@ -5,6 +5,8 @@
 #include "libc/stdio.h"
 #include "libc/string.h"
 #include "drivers/io/io.h"
+#include "drivers/serial/serial.h"
+#include "drivers/keyboard/keyboard.h"
 
 /* Define total IDT Interrupts */
 struct idt_descriptor idt_descriptors[HUGUINX_TOTAL_INTERRUPTS];
@@ -19,16 +21,15 @@ extern void idt_load(struct idtr_descriptor* ptr);
 extern void int21h();
 extern void no_interrupt();
 
-const char* mensaje_divide_zero_error = "Divide by zerro error\n";
+const char* divide_zero_error_message = "Divide by zero error\n";
 
 void idt_zero() {
-	// huguinx_logs(mensaje_divide_zero_error);
-	huguinx_clear();
+	huguinx_print(divide_zero_error_message);
 }
 
 void int21h_handler() {
 	/* Our keyboard interrupt function will be implemented later */
-	huguinx_logs("TECLA DEL TECLADO PULSADAAAAAAAAAAAAAAAAAAAAA");
+	init_keyboard();
 }
 
 void no_interrupt_handler() {

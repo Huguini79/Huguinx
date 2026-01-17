@@ -57,6 +57,8 @@ tss_load(0x28);
     idt_init();
    huguinx_logs("IDT INITIALIZED WITH SUCCESS");
 
+	// enable_interrupts();
+
 	char disk_buf[512];
 	disk_read_sector(0, 1, disk_buf); // Reads 1 sector of the Hard drive
 
@@ -78,18 +80,18 @@ tss_load(0x28);
 	huguinx_print("root@huguinx# ");
 	write_serial_string("\n\n");
 	write_serial_string("root@huguinx# ");
+
 	// tss_load(0x28);
-	init_keyboard(); // WARNING: THIS FUNCTIONS USES MANUAL POLLING, THIS RUNS AN INFINITE LOOP THAT CHECKS THE STATUS OF THE KEYBOARD AND THE SCANCODE
-	
-	// int divi = 40 / 0;
+	// init_keyboard(); // WARNING: THIS FUNCTIONS USES MANUAL POLLING, THIS RUNS AN INFINITE LOOP THAT CHECKS THE STATUS OF THE KEYBOARD AND THE SCANCODE
+
+	int divi = 40 / 0;
 
     // huguinx_xychar(50, 50, 'A', 15);
 
     /* init_keyboard(); */
     
    while(1) {
-        __asm__("hlt");
-   
+	__asm__ __volatile__("sti");
    }
 
 }

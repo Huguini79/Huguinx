@@ -7,19 +7,13 @@
 int shift_pressed = 0;
 
 void init_keyboard() {
-	while(1) {
-		uint8_t status = insb(0x64);
-		
-		if (status & 0x01) {
 			uint8_t scancode = insb(0x60);
 			
 			if(scancode == RIGHT_SHIFT_PRESSED_SCANCODE || scancode == LEFT_SHIFT_PRESSED_SCANCODE) {
 				shift_pressed = 1;
-				continue;
 			}
 			if(scancode == RIGHT_SHIFT_RELEASED_SCANCODE || scancode == LEFT_SHIFT_RELEASED_SCANCODE) {
 				shift_pressed = 0;
-				continue;
 			}
 			
 			/* Special Scancodes */
@@ -66,7 +60,6 @@ void init_keyboard() {
 			if(scancode == X_SCANCODE) {huguinx_print(shift_pressed ? "X" : "x");}
 			if(scancode == Y_SCANCODE) {huguinx_print(shift_pressed ? "Y" : "y");}
 			if(scancode == Z_SCANCODE) {huguinx_print(shift_pressed ? "Z" : "z");}
-		}
-		
-	}
+
+		outb(0x20, 0x20);
 }
