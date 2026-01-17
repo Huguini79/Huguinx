@@ -4,7 +4,7 @@
 /* GDT */
 
 /* Total GDT Segments */
-#define HUGUINX_TOTAL_GDT_SEGMENTS 3 // <- 1) Null Segment, Kernel code segment, Kernel data segment
+#define HUGUINX_TOTAL_GDT_SEGMENTS 6 // <- NULL Segment, Kernel code segment, Kernel data segment, User, User, TSS Segment
 
 /* IDT */
 
