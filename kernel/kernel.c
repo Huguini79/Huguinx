@@ -9,6 +9,7 @@
 #include "arch/x86/gdt/gdt.h"
 #include "drivers/keyboard/keyboard.h"
 #include "drivers/disk/disk.h"
+#include "arch/x86/tss/tss.h"
 
 #include "config.h"
 
@@ -16,15 +17,19 @@
 
 #include "drivers/memory/heap/heap.h"
 #include "drivers/memory/paging/paging.h"
-#include "arch/x86/tss/tss.h"
 
 */
+
+struct tss tss;
 
 struct gdt gdt_real[HUGUINX_TOTAL_GDT_SEGMENTS];
 struct gdt_structured gdt_structured[HUGUINX_TOTAL_GDT_SEGMENTS] = {
 {.base=0x00, .limit=0x00, .type=0x00}, // NULL Segment
 {.base=0x00, .limit=0xffffffff, .type=0x9a}, // Kernel code Segment
-{.base=0x00, .limit=0xffffffff, .type=0x92} // Kernel data Segment
+{.base=0x00, .limit=0xffffffff, .type=0x92}, // Kernel data Segment
+{.base=0x00, .limit=0xffffffff, .type=0xf8}, // User
+{.base=0x00, .limit=0xffffffff, .type=0xf2}, // User
+{.base=(uint32_t)&tss, .limit=sizeof(tss) - 1, .type=0xE9} // TSS Segment
 };
  
 void kernel_main() {
@@ -40,6 +45,14 @@ void kernel_main() {
 	gdt_load(gdt_real, sizeof(gdt_real));
 	
 huguinx_logs("GDT INITIALIZED WITH SUCCESS");
+huguinx_logs("TSS INITIALIZED WITH SUCCESS");
+
+memset(&tss, 0x00, sizeof(tss));
+tss.esp0 = 0x600000;
+tss.ss0 = KERNEL_DATA_SELECTOR;
+
+tss_load(0x28);
+
   huguinx_logs("VGA INITIALIZED WITH SUCCESS");
     idt_init();
    huguinx_logs("IDT INITIALIZED WITH SUCCESS");
@@ -65,6 +78,7 @@ huguinx_logs("GDT INITIALIZED WITH SUCCESS");
 	huguinx_print("root@huguinx# ");
 	write_serial_string("\n\n");
 	write_serial_string("root@huguinx# ");
+	// tss_load(0x28);
 	init_keyboard(); // WARNING: THIS FUNCTIONS USES MANUAL POLLING, THIS RUNS AN INFINITE LOOP THAT CHECKS THE STATUS OF THE KEYBOARD AND THE SCANCODE
 	
 	// int divi = 40 / 0;
