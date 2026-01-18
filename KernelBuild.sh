@@ -28,6 +28,7 @@ mkdir build
 ./scripts/compiletss.sh # COMPILE THE TSS IMPLEMENTATION
 ./scripts/compileentry.sh # COMPILE THE ENTRY FROM GRUB AND THE C KERNEL
 ./scripts/compiledisk.sh # COMPILE THE ATA DISK DRIVER
+./scripts/compilemouse.sh # COMPILE THE MOUSE DRIVER
 
 ./scripts/makeelf.sh
 

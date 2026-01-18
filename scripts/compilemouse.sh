@@ -1,0 +1,1 @@
+gcc -I./ -m32 -ffreestanding -nostdlib -c drivers/mouse/mouse.c -o build/mouse.o

@@ -32,6 +32,14 @@ void huguinx_xychar(int x, int y, char c, char color) {
 
 }
 
+void cursor_1(int mouse_x, int mouse_y) {
+	huguinx_xychar(mouse_x, mouse_y, vga->video_mem[(mouse_y * 80) + mouse_x], 15);
+}
+
+void cursor_2(int mouse_x, int mouse_y) {
+	huguinx_xychar(mouse_x, mouse_y, vga->video_mem[(mouse_y * 80) + mouse_x], 0xE4);
+}
+
 void huguinx_logs(const char* str) {
 		write_serial_string("\nLOG: *");
 		row_plus();

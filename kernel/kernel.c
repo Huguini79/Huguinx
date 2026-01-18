@@ -10,6 +10,7 @@
 #include "drivers/keyboard/keyboard.h"
 #include "drivers/disk/disk.h"
 #include "arch/x86/tss/tss.h"
+#include "drivers/mouse/mouse.h"
 
 #include "config.h"
 
@@ -78,6 +79,7 @@ tss_load(0x28);
 	// huguinx_logs("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
 
 	huguinx_logs("KEYBOARD INITIALIZED WITH SUCCESS");
+	huguinx_logs("MOUSE INITIALIZED WITH SUCCESS");
 	row_plus();
 	row_plus();
 	huguinx_logs("Type <help> to see all the available commands");
@@ -94,6 +96,8 @@ tss_load(0x28);
 
 	int divi = 40 / 0;
 	
+	mouse_install();
+
 	row_plus();
 	
 	huguinx_print("# ");

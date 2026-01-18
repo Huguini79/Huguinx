@@ -5,12 +5,20 @@ section .text
 
 extern int21h_handler
 extern no_interrupt_handler
+extern mouse_handler_c
 
 global int21h
 global idt_load
 global no_interrupt
 global enable_interrumpts
 global disable_interrumpts
+
+global mouse_handler
+mouse_handler:
+    pusha
+    call mouse_handler_c
+    popa
+    iretd
 
 
 enable_interrumpts:

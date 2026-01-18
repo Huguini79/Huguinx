@@ -15,10 +15,12 @@ struct idtr_descriptor idtr_descriptor;
 void idt_zero();
 void idt_set(int interrupt_no, void* address);
 void int21_handler();
+extern void mouse_handler_c();
 void no_interrupt_handler();
 
 extern void idt_load(struct idtr_descriptor* ptr);
 extern void int21h();
+extern void mouse_handler();
 extern void no_interrupt();
 
 const char* divide_zero_error_message = "\n";
@@ -32,6 +34,14 @@ void int21h_handler() {
 	/* Our keyboard interrupt function will be implemented later */
 	init_keyboard();
 }
+void mouse_handler_c() {
+    uint8_t data = insb(0x60);
+    mouse_process_byte(data);
+
+    outb(0xA0, 0x20);  // EOI esclavo
+    outb(0x20, 0x20);  // EOI maestro
+}
+
 
 void no_interrupt_handler() {
 	outb(0x20, 0x20);
@@ -73,7 +83,7 @@ void idt_init() {
 	
 	/* NOW WE SET OUR SECOND INTERRUPT, THE KEYBOARD INTERRUPT */
 	idt_set(0x09, int21h);
-	
+	idt_set(0x74, mouse_handler_c);
 	/* YES YES YES, WE LOAD THE IDT */
 	idt_load(&idtr_descriptor);
 	
