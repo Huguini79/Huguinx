@@ -15,4 +15,7 @@
 /* Total IDT Interrupts */
 #define HUGUINX_TOTAL_INTERRUPTS 512
 
+/* DISK */
+#define HUGUINX_SECTOR_SIZE 512 /* We define the size of the sectors <- 512 Bytes*/
+
 #endif

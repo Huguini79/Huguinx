@@ -59,6 +59,8 @@ tss_load(0x28);
   huguinx_logs("VGA INITIALIZED WITH SUCCESS");
     idt_init();
    huguinx_logs("IDT INITIALIZED WITH SUCCESS");
+	disk_search_and_init();
+	huguinx_logs("DISK DRIVER INITIALIZED WITH SUCCESS");
 
 	// enable_interrupts();
 

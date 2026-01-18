@@ -3,6 +3,8 @@
 #ifndef STRING_H
 #define STRING_H
 
+#include <stdbool.h>
+
 static inline int strlen(const char* str) {
 	size_t len = 0;
 
@@ -12,6 +14,19 @@ static inline int strlen(const char* str) {
 
 	return len;
 
+}
+
+static inline int strnlen(const char* ptr, int max) {
+    int i = 0;
+
+    for (int i = 0; i < max; i++) {
+        if (ptr[i] == 0) {
+            break;
+        }
+    }
+
+    return i;
+    
 }
 
 static void* memset(void *ptr, int c, size_t size) {
@@ -39,6 +54,28 @@ static int strncmp(const char* str1, const char* str2, int n)
     }
 
     return 0;
+}
+
+static inline bool isdigit(char c) {
+    return c >= 48 && c <= 57;
+}
+
+static inline int tonumericdigit(char c) {
+    return c - 48;
+}
+
+static int memcmp(void* s1, void* s2, int count) {
+    char* c1 = s1;
+    char* c2 = s2;
+
+    while (count-- > 0) {
+        if(*c1++ != *c2++) {
+            return c1[-1] < c2[-1] ? -1 : 1;
+        }
+    }
+
+    return 0;
+
 }
 
 #endif
