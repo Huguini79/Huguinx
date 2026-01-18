@@ -11,6 +11,7 @@
 #include "drivers/disk/disk.h"
 #include "arch/x86/tss/tss.h"
 #include "drivers/mouse/mouse.h"
+// #include "drivers/net/ethernet/inteli217/net.hpp"
 
 #include "config.h"
 
@@ -62,6 +63,10 @@ tss_load(0x28);
    huguinx_logs("IDT INITIALIZED WITH SUCCESS");
 	disk_search_and_init();
 	huguinx_logs("DISK DRIVER INITIALIZED WITH SUCCESS");
+	
+	/* COMING SOON */
+	// start_ethernet_i217();
+	// huguinx_logs("NETWORK DRIVER HAS BEEN INITIALIZED WITH SUCCESS");
 
 	// enable_interrupts();
 
