@@ -11,7 +11,7 @@
 #include "drivers/disk/disk.h"
 #include "arch/x86/tss/tss.h"
 #include "drivers/mouse/mouse.h"
-// #include "drivers/net/ethernet/inteli217/net.hpp"
+#include "pit/pit.h"
 
 #include "config.h"
 
@@ -40,17 +40,17 @@ void kernel_main() {
     huguinx_print("Huguinx - 1.0 | Huguini79 (https://github.com/Huguini79/Huguinx)");
     row_plus();
     row_plus();
-    huguinx_print("X86 OPERATING SYSTEM FROM SCRATCH");
+    huguinx_print("X86 OPERATING SYSTEM FROM SCRATCH\n\n");
 
-    huguinx_logs("KERNEL INITIALIZED WITH SUCCESS\n\n");
+    huguinx_print("[ OK ] KERNEL\n");
     
 	memset(gdt_real, 0x00, sizeof(gdt_real));
 	gdt_structured_to_gdt(gdt_real, gdt_structured, HUGUINX_TOTAL_GDT_SEGMENTS);
 
 	gdt_load(gdt_real, sizeof(gdt_real));
 	
-huguinx_logs("GDT INITIALIZED WITH SUCCESS");
-huguinx_logs("TSS INITIALIZED WITH SUCCESS");
+huguinx_print("[ OK ] GDT\n");
+huguinx_print("[ OK ] TSS\n");
 
 memset(&tss, 0x00, sizeof(tss));
 tss.esp0 = 0x600000;
@@ -58,15 +58,11 @@ tss.ss0 = KERNEL_DATA_SELECTOR;
 
 tss_load(0x28);
 
-  huguinx_logs("VGA INITIALIZED WITH SUCCESS");
+  huguinx_print("[ OK ] VGA\n");
     idt_init();
-   huguinx_logs("IDT INITIALIZED WITH SUCCESS");
+   huguinx_print("[ OK ] IDT\n");
 	disk_search_and_init();
-	huguinx_logs("DISK DRIVER INITIALIZED WITH SUCCESS");
-	
-	/* COMING SOON */
-	// start_ethernet_i217();
-	// huguinx_logs("NETWORK DRIVER HAS BEEN INITIALIZED WITH SUCCESS");
+	huguinx_print("[ OK ] DISK DRIVER\n");
 
 	// enable_interrupts();
 
@@ -78,26 +74,21 @@ tss_load(0x28);
 	// }
 
 	init_serial();
-	
-	huguinx_logs("HELLO FROM Huguinx OPERATING SYSTEM"); // THIS WRITES IN SERIAL AND IN VGA
-	
-	// huguinx_logs("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
+		
+	// huguinx_print("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
 
-	huguinx_logs("KEYBOARD INITIALIZED WITH SUCCESS");
-	huguinx_logs("MOUSE INITIALIZED WITH SUCCESS");
+	huguinx_print("[ OK ] KEYBOARD\n");
+	huguinx_print("[ OK ] MOUSE");
 	row_plus();
 	row_plus();
-	huguinx_logs("Type <help> to see all the available commands");
-	row_plus();
-	row_plus();
-	row_plus();
-	row_plus();
+	huguinx_print("HELLO FROM Huguinx OPERATING SYSTEM\n\n");
+	huguinx_print("Type <help> to see all the available commands\n\n\n\n");
 	huguinx_print("# ");
 	write_serial_string("\n\n");
 	write_serial_string("# ");
 
 	// tss_load(0x28);
-	// init_keyboard(); // WARNING: THIS FUNCTIONS USES MANUAL POLLING, THIS RUNS AN INFINITE LOOP THAT CHECKS THE STATUS OF THE KEYBOARD AND THE SCANCODE
+	// init_keyboard(); // WARNING: THIS FUNCTIONS USE MANUAL POLLING, THIS RUNS AN INFINITE LOOP THAT CHECKS THE STATUS OF THE KEYBOARD AND THE SCANCODE
 
 	int divi = 40 / 0;
 	
@@ -107,6 +98,8 @@ tss_load(0x28);
 	
 	huguinx_print("# ");
 	write_serial_string("# ");
+
+	pit_init();
 
     // huguinx_xychar(50, 50, 'A', 15);
 

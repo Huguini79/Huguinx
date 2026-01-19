@@ -5,6 +5,7 @@
 #include "drivers/vga/vga.h"
 #include "kernel/kernel.h"
 #include "drivers/disk/disk.h"
+#include "pit/pit.h"
 
 int shift_pressed = 0;
 
@@ -38,6 +39,7 @@ void init_keyboard() {
 				else if(strncmp(command_buffer, "clear", 5) == 0) {huguinx_clear();row_plus();huguinx_print("# ");write_serial_string("# ");}
 				else if(strncmp(command_buffer, "echo", 4) == 0) {row_plus();huguinx_print(command_buffer + 5);write_serial('\n');write_serial_string(command_buffer + 5);row_plus();row_plus();huguinx_print("# ");write_serial_string("\n\n# ");}
 				else if(strncmp(command_buffer, "help", 4) == 0) {huguinx_clear();huguinx_print("HELP:\nclear - Clears the screen <- this only works in VGA text mode\nread1sector - Reads 1 sector of the ATA/IDE Hard Drive\nread3sectors - Reads 3 sectors of the ATAA/IDE Hard Drive\nhello - A simple hello for the huguinx operating system\necho - Prints the text that you want");row_plus();row_plus();huguinx_print("# ");}
+				else if(strncmp(command_buffer, "wait2", 5) == 0) {sleep(2000); huguinx_logs("HELLO 2 SECONDS LATER");}
 				else {huguinx_logs("ERROR => COMMAND NOT RECOGNIZED");}
 				
 				command_buffer[0] = '\0';

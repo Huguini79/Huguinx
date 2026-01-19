@@ -7,6 +7,7 @@
 #include "drivers/io/io.h"
 #include "drivers/serial/serial.h"
 #include "drivers/keyboard/keyboard.h"
+#include "pit/pit.h"
 
 /* Define total IDT Interrupts */
 struct idt_descriptor idt_descriptors[HUGUINX_TOTAL_INTERRUPTS];
@@ -22,6 +23,7 @@ extern void idt_load(struct idtr_descriptor* ptr);
 extern void int21h();
 extern void mouse_handler();
 extern void no_interrupt();
+extern void pit_irq_handler_asm();
 
 const char* divide_zero_error_message = "\n";
 
@@ -57,7 +59,7 @@ void idt_set(int interrupt_no, void* address) {
 	descriptor->offset_1 = (uint32_t) address & 0x0000ffff;
 	descriptor->selector = KERNEL_CODE_SELECTOR;
 	descriptor->zero = 0x00; /* This is the most easy thing I wrote in an idt implementation XD */
-	descriptor->type_attr = 0xEE;
+	descriptor->type_attr = 0x8E;
 	descriptor->offset_2 = (uint32_t) address >> 16;
 	
 }
@@ -84,6 +86,7 @@ void idt_init() {
 	/* NOW WE SET OUR SECOND INTERRUPT, THE KEYBOARD INTERRUPT */
 	idt_set(0x09, int21h);
 	idt_set(0x74, mouse_handler_c);
+	idt_set(0x08, pit_irq_handler_asm);
 	/* YES YES YES, WE LOAD THE IDT */
 	idt_load(&idtr_descriptor);
 	

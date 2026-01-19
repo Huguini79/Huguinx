@@ -1,0 +1,1 @@
+gcc -I./ -m32 -ffreestanding -nostdlib -c pit/pit.c -o build/pit.o

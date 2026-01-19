@@ -6,12 +6,23 @@ section .text
 extern int21h_handler
 extern no_interrupt_handler
 extern mouse_handler_c
+extern pit_irq_handler
 
 global int21h
 global idt_load
 global no_interrupt
 global enable_interrumpts
 global disable_interrumpts
+
+global pit_irq_handler_asm
+
+pit_irq_handler_asm:
+    pusha
+    call pit_irq_handler
+    popa
+    mov al, 0x20
+    out 0x20, al
+    iret
 
 global mouse_handler
 mouse_handler:

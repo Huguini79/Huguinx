@@ -10,7 +10,7 @@
 #include "libc/stdlib.h"
 
 int init_serial() {
-	huguinx_logs("Serial Ports driver has been initialized");
+	huguinx_print("[ OK ] SERIAL PORTS DRIVER\n");
 	
 	outb(COM1 + 1, 0x00); /* Disable interrupts */
 	outb(COM1 + 3, 0x80); /* ENABLE DLAB (set baud rate divisor)*/
