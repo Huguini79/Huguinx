@@ -38,8 +38,8 @@ void init_keyboard() {
 				else if(strncmp(command_buffer, "read3sectors", 12) == 0) {char disk_buf2[2048]; disk_read_sector(0, 3, disk_buf2); for (int i = 0; i < 2048; i++) {huguinx_perfectchar(disk_buf2[i], 15);write_serial(disk_buf2[i]);}row_plus();row_plus();huguinx_print("# "); write_serial_string("\n\n# ");}
 				else if(strncmp(command_buffer, "clear", 5) == 0) {huguinx_clear();row_plus();huguinx_print("# ");write_serial_string("# ");}
 				else if(strncmp(command_buffer, "echo", 4) == 0) {row_plus();huguinx_print(command_buffer + 5);write_serial('\n');write_serial_string(command_buffer + 5);row_plus();row_plus();huguinx_print("# ");write_serial_string("\n\n# ");}
-				else if(strncmp(command_buffer, "help", 4) == 0) {huguinx_clear();huguinx_print("HELP:\nclear - Clears the screen <- this only works in VGA text mode\nread1sector - Reads 1 sector of the ATA/IDE Hard Drive\nread3sectors - Reads 3 sectors of the ATAA/IDE Hard Drive\nhello - A simple hello for the huguinx operating system\necho - Prints the text that you want");row_plus();row_plus();huguinx_print("# ");}
-				else if(strncmp(command_buffer, "wait2", 5) == 0) {sleep(2000); huguinx_logs("HELLO 2 SECONDS LATER");}
+				else if(strncmp(command_buffer, "help", 4) == 0) {huguinx_clear();huguinx_print("HELP:\nclear - Clears the screen <- this only works in VGA text mode\nread1sector - Reads 1 sector of the ATA/IDE Hard Drive\nwait1 - Waits 1 second <- this uses PIT\nread3sectors - Reads 3 sectors of the ATA/IDE Hard Drive\nhello - A simple hello for the huguinx operating system\necho - Prints the text that you want");row_plus();row_plus();huguinx_print("# ");}
+				else if(strncmp(command_buffer, "wait1", 5) == 0) {sleep(1000);}
 				else {huguinx_logs("ERROR => COMMAND NOT RECOGNIZED");}
 				
 				command_buffer[0] = '\0';

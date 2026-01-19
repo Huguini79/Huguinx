@@ -85,7 +85,7 @@ void idt_init() {
 	
 	/* NOW WE SET OUR SECOND INTERRUPT, THE KEYBOARD INTERRUPT */
 	idt_set(0x09, int21h);
-	idt_set(0x74, mouse_handler_c);
+	idt_set(0x74, mouse_handler); // Se cambió de mouse_handler_c a mouse_handler
 	idt_set(0x08, pit_irq_handler_asm);
 	/* YES YES YES, WE LOAD THE IDT */
 	idt_load(&idtr_descriptor);

@@ -105,8 +105,10 @@ tss_load(0x28);
 
     /* init_keyboard(); */
         
-   while(1) {
-	__asm__ __volatile__("sti");
-   }
+	enable_interrumpts();
+
+	while(1) {
+		__asm__("hlt");
+	}
 
 }
