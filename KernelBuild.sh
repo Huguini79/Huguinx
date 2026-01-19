@@ -30,6 +30,7 @@ mkdir build
 ./scripts/compiledisk.sh # COMPILE THE ATA DISK DRIVER
 ./scripts/compilemouse.sh # COMPILE THE MOUSE DRIVER
 ./scripts/compilepit.sh # COMPILE THE PIT IMPLEMENTATION
+./scripts/compilemovemer.sh # COMPILE THE MOVEMER GAME
 
 ./scripts/makeelf.sh
 

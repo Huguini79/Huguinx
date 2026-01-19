@@ -12,6 +12,7 @@
 #include "arch/x86/tss/tss.h"
 #include "drivers/mouse/mouse.h"
 #include "pit/pit.h"
+#include "games/movemer.h"
 
 #include "config.h"
 

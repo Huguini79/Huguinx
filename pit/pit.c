@@ -4,9 +4,13 @@
 
 #include <stdint.h>
 
+#include <stdbool.h>
+
 int counter_for_pit_s = 0;
 
 bool we_call_pit = false;
+
+bool is_movemer_game = false;
 
 void pit_init() {
     uint32_t divisor = 1193182 / 1000; // 1000 HZ
@@ -27,10 +31,15 @@ static uint32_t ms_counter = 0;
 void pit_irq_handler() {
     ticks++;
 
-    if (we_call_pit && ticks >= counter_for_pit_s) {
-        huguinx_print("\nTimer finished\n# ");
+    if (we_call_pit && ticks >= counter_for_pit_s && is_movemer_game == false) {
+        row_plus();
+        huguinx_print("# ");
         we_call_pit = false;
-    }
+        
+    } else if(we_call_pit && ticks >= counter_for_pit_s && is_movemer_game == true) {
+		huguinx_perfectchar('*', 15);
+		we_call_pit = false;
+	}
 }
 
 
@@ -39,4 +48,13 @@ void sleep(uint32_t ms) {
 
     we_call_pit = true;
 
+}
+
+void sleep_for_game(uint32_t ms) {
+	counter_for_pit_s = ticks + ms;
+	
+	we_call_pit = true;
+	
+	is_movemer_game = true;
+	
 }
