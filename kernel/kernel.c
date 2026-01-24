@@ -12,7 +12,6 @@
 #include "arch/x86/tss/tss.h"
 #include "drivers/mouse/mouse.h"
 #include "pit/pit.h"
-#include "games/movemer.h"
 
 #include "config.h"
 
@@ -82,7 +81,7 @@ tss_load(0x28);
 	huguinx_print("[ OK ] MOUSE");
 	row_plus();
 	row_plus();
-	huguinx_print("HELLO FROM Huguinx OPERATING SYSTEM\n\n");
+	huguinx_print("HELLO FROM Huguinx OPERATING SYSTEM\nBE CAREFULL WITH THE DISK DRIVER\n");
 	huguinx_print("Type <help> to see all the available commands\n\n\n\n");
 	huguinx_print("# ");
 	write_serial_string("\n\n");

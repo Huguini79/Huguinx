@@ -30,7 +30,6 @@ mkdir build
 ./scripts/compiledisk.sh # COMPILE THE ATA DISK DRIVER
 ./scripts/compilemouse.sh # COMPILE THE MOUSE DRIVER
 ./scripts/compilepit.sh # COMPILE THE PIT IMPLEMENTATION
-./scripts/compilemovemer.sh # COMPILE THE MOVEMER GAME
 
 ./scripts/makeelf.sh
 
@@ -41,4 +40,4 @@ echo "iso/boot/kernel"
 echo "huguinx.iso"
 
 # qemu-system-x86_64 -serial stdio huguinx.iso
-qemu-system-i386   -drive file=programtest.bin,format=raw,index=0,media=disk   -cdrom huguinx.iso   -boot d   -serial stdio
+qemu-system-i386   -drive file=HuguiniOS.img,format=raw,index=0,media=disk   -cdrom huguinx.iso   -boot d   -serial stdio
