@@ -28,7 +28,8 @@ void pit_irq_handler() {
     ticks++;
 
     if (we_call_pit && ticks >= counter_for_pit_s) {
-        huguinx_print("\nTimer finished\n# ");
+        row_plus();
+        huguinx_print("# ");
         we_call_pit = false;
     }
 }

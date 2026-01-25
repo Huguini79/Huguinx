@@ -30,6 +30,7 @@ mkdir build
 ./scripts/compiledisk.sh # COMPILE THE ATA DISK DRIVER
 ./scripts/compilemouse.sh # COMPILE THE MOUSE DRIVER
 ./scripts/compilepit.sh # COMPILE THE PIT IMPLEMENTATION
+./scripts/compileprocesscommand.sh # COMPILE THE PROCESS COMMAND IMPLEMENTATION
 
 ./scripts/makeelf.sh
 

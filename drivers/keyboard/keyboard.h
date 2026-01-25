@@ -3,6 +3,8 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
+extern char command_buffer[1024];
+
 /* Keyboard Scancodes */
 
 /* Special Scancodes */

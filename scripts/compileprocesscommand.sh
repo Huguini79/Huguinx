@@ -1,0 +1,1 @@
+gcc -I./ -m32 -ffreestanding -nostdlib -c drivers/keyboard/command/process_command.c -o build/process_command.o
