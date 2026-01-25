@@ -21,7 +21,7 @@ mkdir build
 ./scripts/compileio.sh # COMPILE THE I/O DRIVER
 ./scripts/compileserial.sh # COMPILE THE SERIAL PORTS DRIVER
 ./scripts/compilekeyboard.sh # COMPILE THE KEYBOARD DRIVER
-# ./scripts/compileheap.sh # COMPILE THE HEAP IMPLEMENTATION
+./scripts/compileheap.sh # COMPILE THE HEAP IMPLEMENTATION
 # ./scripts/compilepaging.sh # COMPILE THE PAGING IMPLEMENTATION
 ./scripts/compileidt.sh # COMPILE THE IDT IMPLEMENTATION
 ./scripts/compilegdt.sh # COMPILE THE GDT IMPLEMENTATION

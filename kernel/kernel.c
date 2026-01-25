@@ -12,12 +12,12 @@
 #include "arch/x86/tss/tss.h"
 #include "drivers/mouse/mouse.h"
 #include "pit/pit.h"
+#include "drivers/memory/heap/heap.h"
 
 #include "config.h"
 
 /*
 
-#include "drivers/memory/heap/heap.h"
 #include "drivers/memory/paging/paging.h"
 
 */
@@ -78,7 +78,9 @@ tss_load(0x28);
 	// huguinx_print("THIS IS JUST AN EXAMPLE OF A LOG IN Huguinx OPERATING SYSTEM");
 
 	huguinx_print("[ OK ] KEYBOARD\n");
-	huguinx_print("[ OK ] MOUSE");
+	huguinx_print("[ OK ] MOUSE\n");
+	heap_init();
+	huguinx_print("[ OK ] HEAP");
 	row_plus();
 	row_plus();
 	huguinx_print("HELLO FROM Huguinx OPERATING SYSTEM\nBE CAREFULL WITH THE DISK DRIVER\n");
@@ -112,3 +114,5 @@ tss_load(0x28);
 	}
 
 }
+
+/* TIP: Use row_plus() instead of \n */
