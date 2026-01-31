@@ -13,24 +13,21 @@
 #include "drivers/mouse/mouse.h"
 #include "pit/pit.h"
 #include "drivers/memory/heap/heap.h"
+#include "drivers/memory/paging/paging.h"
 
 #include "config.h"
 
-/*
-
-#include "drivers/memory/paging/paging.h"
-
-*/
-
 struct tss tss;
+
+static struct paging* kernel_chunk_4gb = 0;
 
 struct gdt gdt_real[HUGUINX_TOTAL_GDT_SEGMENTS];
 struct gdt_structured gdt_structured[HUGUINX_TOTAL_GDT_SEGMENTS] = {
 {.base=0x00, .limit=0x00, .type=0x00}, // NULL Segment
-{.base=0x00, .limit=0xffffffff, .type=0x9a}, // Kernel code Segment
-{.base=0x00, .limit=0xffffffff, .type=0x92}, // Kernel data Segment
-{.base=0x00, .limit=0xffffffff, .type=0xf8}, // User
-{.base=0x00, .limit=0xffffffff, .type=0xf2}, // User
+{.base=0x00, .limit=0xffffffff, .type=0x9a}, // Kernel Code Segment (CS)
+{.base=0x00, .limit=0xffffffff, .type=0x92}, // Kernel Data Segment (DS)
+{.base=0x00, .limit=0xffffffff, .type=0xf8}, // User Code Segment (CS)
+{.base=0x00, .limit=0xffffffff, .type=0xf2}, // User Data Segment (DS)
 {.base=(uint32_t)&tss, .limit=sizeof(tss) - 1, .type=0xE9} // TSS Segment
 };
  
@@ -80,7 +77,14 @@ tss_load(0x28);
 	huguinx_print("[ OK ] KEYBOARD\n");
 	huguinx_print("[ OK ] MOUSE\n");
 	heap_init();
-	huguinx_print("[ OK ] HEAP");
+	huguinx_print("[ OK ] HEAP\n");
+	
+	kernel_chunk_4gb = map_new_4gb(/* Flags */ IS_WRITEABLE_FLAG | IS_PRESENT_FLAG | ACCESS_FROM_ALL_FLAG /* Flags */);
+	switch_page_directory(chunk_4gb_get_directory(kernel_chunk_4gb)); /* Select our kernel page directory */
+	enable_paging();
+
+	huguinx_print("[ OK ] PAGING");
+
 	row_plus();
 	row_plus();
 	huguinx_print("HELLO FROM Huguinx OPERATING SYSTEM\nBE CAREFULL WITH THE DISK DRIVER\n");

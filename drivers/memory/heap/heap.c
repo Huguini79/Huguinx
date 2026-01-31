@@ -111,6 +111,8 @@ int heap_get_start_block(struct heap_struct* heap, uint32_t total_blocks) {
         return -3; /* NO MEMORY ERROR */
     }
 
+    return bs;
+
 }
 
 /* Get the block address <- we use this in malloc */
@@ -153,6 +155,8 @@ void* heap_malloc_blocks(struct heap_struct* heap, uint32_t total_blocks) {
     address = block_to_address(heap, start_block); /* Converts the block to and address */
 
     blocks_taken(heap, start_block, total_blocks); /* Marks the blocks as taken */
+
+    return address;
 
 }
 
