@@ -32,8 +32,8 @@ struct gdt_structured gdt_structured[HUGUINX_TOTAL_GDT_SEGMENTS] = {
 };
  
 void kernel_main() {
-    huguinx_init_screen();
-    
+	huguinx_init_screen();
+
     huguinx_print("Huguinx - 1.0 | Huguini79 (https://github.com/Huguini79/Huguinx)");
     row_plus();
     row_plus();

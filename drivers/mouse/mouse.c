@@ -2,6 +2,8 @@
 #include "drivers/io/io.h"
 #include "drivers/vga/vga.h"
 
+#include "libc/stdlib.h"
+
 #include <stdint.h>
 #include <stddef.h>
 

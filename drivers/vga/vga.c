@@ -12,33 +12,36 @@
 
 struct vga* vga;
 
+uint16_t saved_cell;
+int saved_x;
+int saved_y;
+
 void huguinx_init_screen() {
 	// WE INIT THE SCREEN
 	vga->video_mem = (uint16_t*)(0xB8000); // 0xB8000 address
 
-	// WE SET THE X AND Y POSITION TO 0
+	// WE SET THE X AND Y POSITION TO 0x00
 	huguinx_clear();
 
 }
 
-uint16_t huguinx_create_char(char c, char color) {
-	// WE CREATE A CHARACTER TO PUT IT IN THE VGA video mem
-	return (color << 8) | c;
-}
-
 void huguinx_xychar(int x, int y, char c, char color) {
 	// WE PUT A CHARACTER IN THE VGA video mem
-	vga->video_mem[(y * VGA_WIDTH) + x] = huguinx_create_char(c, color);
+	vga->video_mem[(y * VGA_WIDTH) + x] = (uint16_t)(color << 8) | c;
 
 }
-
 void cursor_1(int mouse_x, int mouse_y) {
-	huguinx_xychar(mouse_x, mouse_y, vga->video_mem[(mouse_y * 80) + mouse_x], 15);
+	huguinx_xychar(mouse_x, mouse_y, saved_cell, 15);
 }
 
 void cursor_2(int mouse_x, int mouse_y) {
-	huguinx_xychar(mouse_x, mouse_y, vga->video_mem[(mouse_y * 80) + mouse_x], 0xE4);
+	saved_cell = vga->video_mem[mouse_y * 80 + mouse_x];
+	saved_x = mouse_x;
+	saved_y = mouse_y;
+	uint16_t ch = saved_cell & 0x00FF;
+	huguinx_xychar(mouse_x, mouse_y, '/', 15);
 }
+
 
 void huguinx_logs(const char* str) {
 		write_serial_string("\nLOG: *");
@@ -48,7 +51,7 @@ void huguinx_logs(const char* str) {
 		huguinx_print(str);
 		write_serial('*');
 		huguinx_print("*");
-	
+
 }
 
 void huguinx_perfectchar(char c, char color) {
@@ -110,7 +113,7 @@ void huguinx_clear() {
 	// WE CREATE A LOOP TO WRITE SPACES WITH NO COLOR IN ALL THE SCREEN
 	for (int y = 0; y < VGA_HEIGHT; y++) {
 		for (int x = 0; x < VGA_WIDTH; x++) {
-			huguinx_xychar(x, y, ' ', 0);
+			huguinx_xychar(x, y, ' ', 0x00);
 		}
 	}
 
