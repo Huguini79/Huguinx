@@ -21,7 +21,7 @@ struct paging {
 struct paging* map_new_4gb(uint8_t flags); /* Map 4GB to a virtual address space (we use this in multitasking, and in the initialization of the kernel <- so we map 4 gb to the kernel) */
 void switch_page_directory(uint32_t* page_directory); /* We use this to switch from different page directories, for example, page directories of proccesses or from the kernel */
 void enable_paging(); /* The NASM function that enables paging */
-
+void paging_free_4gb(struct paging* chunk);
 uint32_t* chunk_4gb_get_directory(struct paging* chunk); /* We get the page directory of a virtual address space that it's mapped <- (chunk) */
 
 #endif

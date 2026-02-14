@@ -43,3 +43,16 @@ void switch_page_directory(uint32_t* page_directory) {
 uint32_t* chunk_4gb_get_directory(struct paging* chunk) {
     return chunk->directory_entry; /* We return the page directory of the actual chunk */
 }
+
+
+void paging_free_4gb(struct paging* chunk) {
+	for (int i = 0; i < TOTAL_TABLE_ENTRIES; i++) {
+		uint32_t entry = chunk->directory_entry[i];
+		uint32_t* table = (uint32_t*)(entry & 0xfffff000);
+		kfree(table); // We free each page table
+	}
+
+	kfree(chunk->directory_entry); // Free the page directory
+	kfree(chunk); // We finally free the 4 gb chunk
+
+}
