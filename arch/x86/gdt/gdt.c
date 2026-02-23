@@ -2,37 +2,32 @@
 // #include "drivers/vga/vga.c"
 // #include "libc/stdio.h"
 
-void encodeGdtEntry(uint8_t* target, struct gdt_structured source) {
-	if((source.limit > 65536) && ((source.limit & 0xFFF) != 0xFFF)) {
-		// panic("INVALID GDT ARGUMENT (/arch/x86/gdt/gdt.c : line 6");
-		// huguinx_print("INVALID GDT ARGUMENT (/arch/x86/gdt/gdt.c : line 6");
-	}
-	
-	target[6] = 0x40;
-	
-	if (source.limit > 65536) {
-		source.limit = source.limit >> 12;
-		target[6] = 0xC0;
-	}
-	
-	// Encode the limit
-	target[0] = source.limit & 0xFF;
-	target[1] = (source.limit >> 8) & 0xFF;
-	target[6] |= (source.limit >> 16) & 0x0F;
-	
-	// Encode the base
-	target[2] = source.base & 0xFF;
-	target[3] = (source.base >> 8) & 0xFF;
-	target[4] = (source.base >> 16) & 0xFF;
-	target[7] = (source.base >> 24) & 0xFF;
-	
-	// Set the type
-	target[5] = source.type;
-	
+struct Gdt* CreateNullSegment(struct Gdt* Gdt) {
+	Gdt->limit = 0x00;
+	Gdt->base_first_0_15_bits = 0x00;
+	Gdt->base_16_23_bits = 0x00;
+	Gdt->access_byte = 0x00;
+	Gdt->flags = 0x00;
+	Gdt->base_24_31_bits = 0x00;
+	return Gdt;
 }
 
-void gdt_structured_to_gdt(struct gdt* gdt, struct gdt_structured* structured_gdt, int total_entries) {
-	for (int i = 0; i < total_entries; i++) {
-		encodeGdtEntry((uint8_t*)&gdt[i], structured_gdt[i]);
-	}
+struct Gdt* CreateCodeSegment(struct Gdt* Gdt) {
+	Gdt->limit = 0xFFFF;
+	Gdt->base_first_0_15_bits = 0x00;
+	Gdt->base_16_23_bits = 0x00;
+	Gdt->access_byte = 0x9A;
+	Gdt->flags = 0b11001111;
+	Gdt->base_24_31_bits = 0x00;
+	return Gdt;
+}
+
+struct Gdt* CreateDataSegment(struct Gdt* Gdt) {
+	Gdt->limit = 0xFFFF;
+	Gdt->base_first_0_15_bits = 0x00;
+	Gdt->base_16_23_bits = 0x00;
+	Gdt->access_byte = 0x92;
+	Gdt->flags = 0b11001111;
+	Gdt->base_24_31_bits = 0x00;
+	return Gdt;
 }

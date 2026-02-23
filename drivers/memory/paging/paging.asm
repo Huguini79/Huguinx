@@ -20,7 +20,7 @@ enable_paging:
     mov ebp, esp
 
     mov eax, cr0
-    or eax, 0x80000000 ; Enable a bit (bit 31)
-    mov cr0, eax ; Mov the modified value of eax, to cr0
+    or eax, 0x80000000
+    mov cr0, eax
     pop ebp
     ret

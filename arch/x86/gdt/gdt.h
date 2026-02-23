@@ -5,24 +5,34 @@
 
 #include <stdint.h>
 
-struct gdt {
-	uint16_t segment;
-	uint16_t base_first;
-	uint8_t base;
-	uint8_t access;
-	uint8_t high_flags;
+#define MAX_GDT_SEGMENTS 3
+
+struct Gdt {
+	uint16_t limit;
+	uint16_t base_first_0_15_bits;
+	uint8_t base_16_23_bits;
+	uint8_t access_byte;
+	uint8_t flags;
 	uint8_t base_24_31_bits;
-};
+}__attribute__((packed));
 
-
-/* More comprehensible GDT Structure for humans */
-struct gdt_structured {
+struct Gdtr {
+	uint16_t limit;
 	uint32_t base;
-	uint32_t limit;
-	uint8_t type;
+
+}__attribute__((packed));
+
+static struct Gdt gdt[MAX_GDT_SEGMENTS];
+
+static struct Gdtr gdtr = {
+	.limit = sizeof(gdt) - 1,
+	.base = (uint32_t)&gdt
 };
 
-void gdt_load(struct gdt* gdt, int size);
-void gdt_structured_to_gdt(struct gdt* gdt, struct gdt_structured* structured_gdt, int total_entries);
+void gdt_load(struct Gdtr* Gdtr);
+
+struct Gdt* CreateNullSegment(struct Gdt* Gdt);
+struct Gdt* CreateCodeSegment(struct Gdt* Gdt);
+struct Gdt* CreateDataSegment(struct Gdt* Gdt);
 
 #endif

@@ -4,12 +4,10 @@
 #include "drivers/memory/heap/heap.h"
 
 #include "libc/stdlib.h"
+#include "libc/string.h"
 #include "libc/stdio.h"
 
 struct scheduler* current_running_task = 0;
-
-struct scheduler* task_tail = 0;
-struct scheduler* task_head = 0;
 
 struct scheduler* current_task() {
 	if (!current_running_task) {
