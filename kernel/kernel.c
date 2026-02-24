@@ -33,11 +33,13 @@ void kernel_main() {
 
     huguinx_print("[ OK ] KERNEL\n");
     
-    CreateNullSegment(&gdt[0]);
-    CreateCodeSegment(&gdt[1]);
-    CreateDataSegment(&gdt[2]);
+    CreateNullSegment(&DescriptorGdt[0]);
+    CreateCodeSegment(&DescriptorGdt[1]);
+    CreateDataSegment(&DescriptorGdt[2]);
 
-	gdt_load(&gdtr);
+	gdt_load(&gdtr); // El gdtr contiene el descriptor gdt (DescriptorGdt -> que contiene CS, DS, FS etc..........), que a su vez, el DescriptorGdt contiene los segmentos
+	
+	huguinx_print("[ OK ] GDT\n");
 
 	huguinx_print("\n\n# ");
 

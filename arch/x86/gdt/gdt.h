@@ -22,11 +22,11 @@ struct Gdtr {
 
 }__attribute__((packed));
 
-static struct Gdt gdt[MAX_GDT_SEGMENTS];
+static struct Gdt DescriptorGdt[MAX_GDT_SEGMENTS];
 
 static struct Gdtr gdtr = {
-	.limit = sizeof(gdt) - 1,
-	.base = (uint32_t)&gdt
+	.limit = sizeof(DescriptorGdt) - 1,
+	.base = (uint32_t)DescriptorGdt
 };
 
 void gdt_load(struct Gdtr* Gdtr);
