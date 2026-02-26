@@ -41,6 +41,12 @@ void kernel_main() {
 	
 	huguinx_print("[ OK ] GDT\n");
 
+	IdtInstall();
+
+	huguinx_print("[ OK ] IDT\n");
+	
+	int error_de_division_por_cero = 10 / 0;
+		
 	huguinx_print("\n\n# ");
 
 	init_keyboard();

@@ -5,21 +5,17 @@
 
 #include <stdint.h>
 
-/* This represents a single interrupt in our IDT */
-struct idt_descriptor {
-	uint16_t offset_1; // Offset bits 0-15
-	uint16_t selector; // Selector thats in the GDT
-	uint8_t zero; // Does nothing, unused set to zero
-	uint8_t type_attr; // Descriptor type and attributes
-	uint16_t offset_2; // Offset bits 16-31
-
+struct Idt {
+	uint16_t offset_first_0_15_bits;	// 0-15 bits (16 bits of offset)
+	uint16_t selector;	// Code Segment Selector (0x08)
+	uint8_t zero;	// Unused, set to 0
+	uint8_t type_attributes;	// Gate Type, DPL, And P Fields
+	uint16_t offset_16_31_bits;		// 16-31 bits (16 bits of offset)
 }__attribute__((packed));
 
-/* Describes the start and end of an interrupt descriptor table */
-struct idtr_descriptor {
-	uint16_t limit; // Size of descriptor table -1
-	uint32_t base; // Base address of the start of the IDT
-
+struct Idtr {
+	uint16_t limit;
+	uint32_t base;
 }__attribute__((packed));
 
 #endif

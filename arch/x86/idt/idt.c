@@ -1,93 +1,41 @@
-// Author: Huguini79
-// IDT implementation
 #include "idt.h"
-#include "config.h"
+
 #include "libc/stdio.h"
-#include "libc/string.h"
-#include "drivers/io/io.h"
-#include "drivers/serial/serial.h"
-#include "drivers/keyboard/keyboard.h"
-#include "pit/pit.h"
 
-/* Define total IDT Interrupts */
-struct idt_descriptor idt_descriptors[HUGUINX_TOTAL_INTERRUPTS];
-struct idtr_descriptor idtr_descriptor;
+#include "libc/stdlib.h"
 
-void idt_zero();
-void idt_set(int interrupt_no, void* address);
-void int21_handler();
-extern void mouse_handler_c();
-void no_interrupt_handler();
+#define CODE_SEGMENT_SELECTOR 0x08
 
-extern void idt_load(struct idtr_descriptor* ptr);
-extern void int21h();
-extern void mouse_handler();
-extern void no_interrupt();
-extern void pit_irq_handler_asm();
+struct Idt DescriptorIdt[256];
 
-const char* divide_zero_error_message = "\n";
-
-void idt_zero() {
-	// huguinx_print(divide_zero_error_message);
-	row_plus();
-}
-
-void int21h_handler() {
-	/* Our keyboard interrupt function will be implemented later */
-	init_keyboard();
-}
-void mouse_handler_c() {
-    uint8_t data = insb(0x60);
-    mouse_process_byte(data);
-
-    outb(0xA0, 0x20);  // EOI esclavo
-    outb(0x20, 0x20);  // EOI maestro
-}
-
-
-void no_interrupt_handler() {
-	outb(0x20, 0x20);
-}
-
-/* Map an interrupt to an address */
-/* This is very important for example in Linux, because in Linux if you call "int 80h or int 0x80", our idt is prepared to begin executing at the address provided*/
-
-void idt_set(int interrupt_no, void* address) {
-	/* We define the idt descriptor */
-	struct idt_descriptor* descriptor = &idt_descriptors[interrupt_no];
+struct Idt* IdtSetGate(int num, void* address) {
+	struct Idt* Idt = &DescriptorIdt[num];
 	
-	descriptor->offset_1 = (uint32_t) address & 0x0000ffff;
-	descriptor->selector = KERNEL_CODE_SELECTOR;
-	descriptor->zero = 0x00; /* This is the most easy thing I wrote in an idt implementation XD */
-	descriptor->type_attr = 0x8E;
-	descriptor->offset_2 = (uint32_t) address >> 16;
+	Idt->offset_first_0_15_bits = (uint32_t) address & 0xFFFF;
+	Idt->selector = CODE_SEGMENT_SELECTOR;
+	Idt->zero = 0x00000000;
+	Idt->type_attributes = 0x8E;
+	Idt->offset_16_31_bits = (uint32_t) address >> 16 & 0xFFFF;
+	
+	// return Idt;
 	
 }
 
-/* WE INIT THE IDT, YEEEEES BABY*/
-void idt_init() {
-	memset(idt_descriptors, 0, sizeof(idt_descriptors));
+void zero_interrupt() {
+	huguinx_print("ERROR DE DIVISION POR CERO");
+}
+
+void IdtInstall() {	
+	struct Idtr idtr;
 	
-	/* This reminds me to GDT with .limit and .base values */
+	IdtSetGate(0, zero_interrupt);
 	
-	/* This is the actual idt table size */
-	idtr_descriptor.limit = sizeof(idt_descriptors) - 1;
+	idtr.limit = sizeof(DescriptorIdt) - 1;
+	idtr.base = (uint32_t)DescriptorIdt;
 	
-	/* OMG, this is where our IDT is stored (yes, idt it's an array in memory like GDT) */
-	idtr_descriptor.base = (uint32_t) idt_descriptors;
-	
-	for(int i = 0; i < HUGUINX_TOTAL_INTERRUPTS; i++) {
-		idt_set(i, no_interrupt);
-	}
-	
-	/* Well well well, ladies and gentlemen, we set our first interrupt (it's an exception <- divide by zero error) */
-	idt_set(0, idt_zero);
-	
-	/* NOW WE SET OUR SECOND INTERRUPT, THE KEYBOARD INTERRUPT */
-	idt_set(0x09, int21h);
-	idt_set(0x74, mouse_handler);
-	idt_set(0x08, pit_irq_handler_asm);
-	/* YES YES YES, WE LOAD THE IDT */
-	idt_load(&idtr_descriptor);
+	asm volatile (
+		"lidt %0"
+		: : "m"(idtr)
+	);
 	
 }
