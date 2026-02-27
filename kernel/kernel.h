@@ -5,6 +5,8 @@
 
 #define HUGUINX_MAX_PATH 108
 
+// int syscall_option;
+
 void kernel_main();
 
 #endif

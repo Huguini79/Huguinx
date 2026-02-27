@@ -18,4 +18,6 @@ struct Idtr {
 	uint32_t base;
 }__attribute__((packed));
 
+static inline int syscall_option;
+
 #endif

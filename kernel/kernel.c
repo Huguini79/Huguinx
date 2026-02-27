@@ -22,8 +22,8 @@
 struct tss tss;
 
 static struct paging* kernel_chunk_4gb = 0;
-	
-void kernel_main() {
+		
+void kernel_main() {	
     huguinx_init_screen();
 
     huguinx_print("Huguinx - 1.0 | Huguini79 (https://github.com/Huguini79/Huguinx)");
@@ -37,7 +37,8 @@ void kernel_main() {
     CreateCodeSegment(&DescriptorGdt[1]);
     CreateDataSegment(&DescriptorGdt[2]);
 
-	gdt_load(&gdtr); // El gdtr contiene el descriptor gdt (DescriptorGdt -> que contiene CS, DS, FS etc..........), que a su vez, el DescriptorGdt contiene los segmentos
+	SetUpGdtr(&gdtr);
+	LoadGdt(&gdtr);
 	
 	huguinx_print("[ OK ] GDT\n");
 
@@ -46,6 +47,8 @@ void kernel_main() {
 	huguinx_print("[ OK ] IDT\n");
 	
 	int error_de_division_por_cero = 10 / 0;
+	
+	asm volatile ("int $0x80");
 		
 	huguinx_print("\n\n# ");
 

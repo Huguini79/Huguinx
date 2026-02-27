@@ -22,14 +22,12 @@ struct Gdtr {
 
 }__attribute__((packed));
 
-static struct Gdt DescriptorGdt[MAX_GDT_SEGMENTS];
+extern struct Gdt DescriptorGdt[MAX_GDT_SEGMENTS];
 
-static struct Gdtr gdtr = {
-	.limit = sizeof(DescriptorGdt) - 1,
-	.base = (uint32_t)DescriptorGdt
-};
+extern struct Gdtr gdtr;
 
-void gdt_load(struct Gdtr* Gdtr);
+void SetUpGdtr(struct Gdtr* gdtr);
+void LoadGdt(struct Gdtr* gdtr);
 
 struct Gdt* CreateNullSegment(struct Gdt* Gdt);
 struct Gdt* CreateCodeSegment(struct Gdt* Gdt);
